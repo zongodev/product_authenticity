@@ -1,0 +1,83 @@
+name: product_authenticity_fss
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+
+
+  cupertino_icons: ^1.0.6
+  pretty_qr_code: ^3.3.0
+  mobile_scanner: ^4.0.1
+  get: ^4.6.6
+  animated_text_kit: ^4.2.2
+  screenshot: ^2.3.0
+  url_launcher: ^6.2.5
+  image: ^4.1.7
+  universal_html: ^2.2.4
+  firebase_core: ^2.28.0
+  firebase_auth: ^4.19.0
+  flutter_easyloading: ^3.0.5
+  google_sign_in: ^6.2.1
+  cloud_firestore: ^4.16.0
+  sprung: ^3.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+
+
+
+  flutter_lints: ^3.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+
+
+
+
+
+
+
+
+
+
+
+
+  fonts:
+    - family: Kanit
+      fonts:
+        - asset: fonts/Kanit/Kanit-Regular.ttf
+
+
+    - family: Oganesson
+      fonts:
+        - asset: fonts/chimestry/Oganesson-DP1R.ttf
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins/Poppins-Regular.ttf
+
+
+
+
+
