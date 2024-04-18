@@ -57,8 +57,8 @@ class AllProducts extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: size.height * 0.02,
                   ),
                   Expanded(
                     child: GridView.builder(

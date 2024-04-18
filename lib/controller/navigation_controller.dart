@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_authenticity_fss/routes/routes.dart';
 import 'package:product_authenticity_fss/utils/responsive.dart';
+import 'package:product_authenticity_fss/view/add_product/add_product_mobile.dart';
 import 'package:product_authenticity_fss/view/all_products/all_products.dart';
 import 'package:product_authenticity_fss/view/section_info/section_info.dart';
 import 'package:product_authenticity_fss/view/section_info/section_mobile_info.dart';
@@ -22,7 +23,7 @@ class NavigationController extends GetxController{
       case Routes.LOGIN:
         return const Login();
       case Routes.ADDPRODUCT:
-        return const AddProduct();
+        return const Responsive(mobileLayout: AddProductMobile(), webLayout:  AddProduct());
       case Routes.ALLPRODUCT:
         return const AllProducts();
       default:

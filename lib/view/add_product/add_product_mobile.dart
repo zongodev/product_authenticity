@@ -15,25 +15,55 @@ import '../../shared/buttons.dart';
 
 import '../../shared/signinbtn.dart';
 
-class AddProduct extends StatelessWidget {
-  const AddProduct({super.key});
+class AddProductMobile extends StatelessWidget {
+  const AddProductMobile({super.key});
 
   @override
   Widget build(BuildContext context) {
     GlobalKey qrCodeKey = GlobalKey();
     final size = MediaQuery.of(context).size;
-
     final qrCodeController = Get.find<QrCodeController>();
     final addProductController =
         Get.put<ProductController>(ProductController());
-    return Padding(
-      padding: defaultWebPadding(context),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            child: Form(
+    return SizedBox(
+      height: size.height*0.8,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: size.height * 0.06,
+          left: size.width * 0.04,
+        ),
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: size.width * 0.43,
+                  height: size.height * 0.30,
+                  child: CustomPaint(
+                    foregroundPainter: BorderPainter(),
+                  ),
+                ),
+                RepaintBoundary(
+                  key: qrCodeKey,
+                  child: Obx(
+                    () => SizedBox(
+                      width: size.width * 0.38,
+                      height: size.height * 0.26,
+                      child: Center(
+                        child: PrettyQrView.data(
+                          data: qrCodeController.qrData.value,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.06,
+            ),
+            Form(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -95,20 +125,20 @@ class AddProduct extends StatelessWidget {
                           ProductModel product = ProductModel(
                               productName: addProductController
                                   .nameController.value.text,
-                              category:
-                                  addProductController.catController.value.text,
+                              category: addProductController
+                                  .catController.value.text,
                               description: addProductController
                                   .descController.value.text);
                           addProductController.addProduct(product);
                           print(qrCodeController.qrData.value);
                         },
-                        wSize: size.width * 0.2,
+                        wSize: size.width*0.46,
                       ),
                       const SizedBox(
                         width: 15,
                       ),
                       SignInBtn(
-                        wSize: size.width * 0.11,
+                        wSize: size.width * 0.3,
                         btnText: 'Export',
                         onTap: () async {
                           await qrCodeController.downloadQrCodeImage(
@@ -122,37 +152,8 @@ class AddProduct extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            width: size.width * 0.2,
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: size.width * 0.17,
-                height: size.height * 0.33,
-                child: CustomPaint(
-                  foregroundPainter: BorderPainter(),
-                ),
-              ),
-              RepaintBoundary(
-                key: qrCodeKey,
-                child: Obx(
-                  () => SizedBox(
-                    width: size.width * 0.14,
-                    height: size.height * 0.25,
-                    child: Center(
-                      child: PrettyQrView.data(
-                        data: qrCodeController.qrData.value,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
