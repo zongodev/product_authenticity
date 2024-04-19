@@ -159,6 +159,7 @@ class ProductController extends GetxController {
         EasyLoading.showSuccess("Product updated !");
         final int index = _searchedProductList.value.indexWhere((element) => element.uid==productId);
         _searchedProductList.value[index]=product;
+
         update();
         nameController.value.clear();
         catController.value.clear();

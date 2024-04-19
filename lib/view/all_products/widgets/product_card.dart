@@ -16,197 +16,166 @@ import '../../../helper/container_corner.dart';
 import '../../../shared/signinbtn.dart';
 import '../../add_product/widgets/add_product_text_field.dart';
 import 'deletet_dialog.dart';
+import 'details_dialog.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
     required this.dataForQr,
-    required this.controller,
     required this.index,
   });
 
   final String dataForQr;
-  final ProductController controller;
+
   final int index;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final qrCodeController = Get.find<QrCodeController>();
+    final productController = Get.find<ProductController>();
+    Get.find<QrCodeController>();
+
     GlobalKey qrCodeKey =GlobalKey();
 
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 10,
       child: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              width: size.width * 0.12,
-              height: size.height * 0.2,
-              child: Card(
-                color: Colors.blueAccent,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(11.0),
-                    child: RepaintBoundary(
-                      key: qrCodeKey,
-                      child: PrettyQrView.data(
-                        data: dataForQr,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: LayoutBuilder(
+          builder: (context,constraints){
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: constraints.maxWidth*0.9,
+                    height: constraints.maxWidth*0.7,
+                    child: Card(
+                      color: Colors.blueAccent,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(11.0),
+                          child: RepaintBoundary(
+                            key: qrCodeKey,
+                            child: PrettyQrView.data(
+                              data: dataForQr,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  controller.searchedProduct[index].productName!,
-                  style: navBarItemStyle.copyWith(color: headerColor),
-                ),
-                Text(
-                  controller.searchedProduct[index].description!,
-                  style: const TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey),
-                ),
-              ],
-            ),
-
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Get.dialog(AlertDialog(
-                      actions: [
-                        SignInBtn(
-                          wSize: size.width*0.2,
-                          btnText: 'Export Qr code',
-                          onTap: () async {
-                            await qrCodeController.downloadQrCodeImage(
-                                controller.searchedProduct[index].productName!,
-                                qrCodeKey);
-                          }, clr: Colors.blueAccent,
-                        ),
-                      ],
-                      surfaceTintColor: Colors.white,
-                      title: Text(
-                        "Details",
-                        style: navBarItemStyle.copyWith(fontSize: 20),
-                      ),
-                      content: SizedBox(
-                        width: size.width * 0.2,
-                        height: size.width * 0.2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Product name :",
-                              style: navBarItemStyle.copyWith(fontSize: 18),
-                            ),
-                            Text(
-                                controller.searchedProduct[index].productName!,style: detailsDialogTextStyle),
-                            Text(
-                              "Product category :",
-                              style: navBarItemStyle.copyWith(fontSize: 18),
-                            ),
-                            Text(
-                                controller.searchedProduct[index].category!,style: detailsDialogTextStyle,),
-                            Text(
-                              "Description :",
-                              style: navBarItemStyle.copyWith(fontSize: 18),
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: Text(
-                                    controller.searchedProduct[index].description!,style: detailsDialogTextStyle,),
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                    ));
-                  },
-                  label: const Text("Details"),
-                  style: ElevatedButton.styleFrom(
-                      surfaceTintColor: Colors.white,
-                      backgroundColor: Colors.blueAccent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      textStyle: dialogButtons),
-                  icon: const Icon(Icons.description_outlined),
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                        onPressed: () async {
-                          Get.dialog(
-                            DeleteDialog(
-                              productName: controller
-                                  .searchedProduct[index].productName!,
-                              onPressed: () async {
-                                await controller.deleteProduct(
-                                    controller.searchedProduct[index].uid!,
-                                    controller
-                                        .searchedProduct[index].productName!);
-                              },
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.delete)),
-                    IconButton(
-                        onPressed: () {
-                          controller.nameController.value.text =
-                              controller.searchedProduct[index].productName!;
-                          controller.catController.value.text =
-                              controller.searchedProduct[index].category!;
-                          controller.descController.value.text =
-                              controller.searchedProduct[index].description!;
-                          Get.dialog(
-                            UpdateDialog(
-                              size: size,
-                              controller: controller,
-                              index: index,
-                              onPress: () async {
-                                EasyLoading.show(status: "loading ...");
-                                ProductModel editedProduct = ProductModel(
-                                    productName:
-                                        controller.nameController.value.text,
-                                    category:
-                                        controller.catController.value.text,
-                                    description:
-                                        controller.descController.value.text);
-                                await controller.updateProduct(
-                                    controller.searchedProduct[index].uid!,
-                                    editedProduct);
-                              },
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.edit)),
+                    Text(
+                      productController.searchedProduct[index].productName!,
+                      style: navBarItemStyle.copyWith(color: headerColor),
+                    ),
+                    Text(
+                      productController.searchedProduct[index].description!,
+                      style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                    ),
                   ],
                 ),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width:constraints.maxWidth*0.6,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Get.dialog(
+                              DetailsDialog(size: size, index: index, qrCodeKey: qrCodeKey));
+                        },
+                        label: const FittedBox(fit:BoxFit.scaleDown,child: Text("Details")),
+                        style: ElevatedButton.styleFrom(
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            textStyle: dialogButtons),
+                        icon: const Icon(Icons.description_outlined),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              Get.dialog(
+                                DeleteDialog(
+                                  productName: productController
+                                      .searchedProduct[index].productName!,
+                                  onPressed: () async {
+                                    await productController.deleteProduct(
+                                        productController.searchedProduct[index].uid!,
+                                        productController
+                                            .searchedProduct[index].productName!);
+                                  },
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.delete,)),
+                        IconButton(
+                            onPressed: () {
+                              productController.nameController.value.text =
+                              productController.searchedProduct[index].productName!;
+                              productController.catController.value.text =
+                              productController.searchedProduct[index].category!;
+                              productController.descController.value.text =
+                              productController.searchedProduct[index].description!;
+                              Get.dialog(
+                                UpdateDialog(
+                                  size: size,
+                                  index: index,
+                                  onPress: () async {
+                                    print("$index");
+                                    EasyLoading.show(status: "loading ...");
+                                    ProductModel editedProduct = ProductModel(
+                                        productName:
+                                        productController.nameController.value.text,
+                                        category:
+                                        productController.catController.value.text,
+                                        description:
+                                        productController.descController.value.text,
+                                        uid: productController.searchedProduct[index].uid!
+                                    );
+                                    print("test the log $index");
+                                    print("test the log new ${productController.searchedProduct[index].uid}");
+                                    await productController.updateProduct(
+                                        productController.searchedProduct[index].uid!,
+                                        editedProduct);
+                                  },
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.edit)),
+                      ],
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
+            );
+          },
+
         ),
       ),
     );
   }
 }
+
+
 
 /*
 * ListTile(

@@ -9,6 +9,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:product_authenticity_fss/constants/colors.dart';
 import 'package:product_authenticity_fss/constants/const_padding.dart';
 import 'package:product_authenticity_fss/shared/signinbtn.dart';
+import 'package:product_authenticity_fss/utils/responsive.dart';
 import 'package:product_authenticity_fss/view/all_products/widgets/custom_searchbar.dart';
 import 'package:product_authenticity_fss/view/all_products/widgets/delete_all_button.dart';
 import 'package:product_authenticity_fss/view/all_products/widgets/deletet_dialog.dart';
@@ -44,7 +45,7 @@ class AllProducts extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomSearchBar(
-                        controller: controller,
+                        controller: controller, width: size.width*0.2,
                       ),
                       DeleteAllButton(
                         onPress: () {
@@ -62,20 +63,21 @@ class AllProducts extends StatelessWidget {
                   ),
                   Expanded(
                     child: GridView.builder(
+
                       itemBuilder: (context, index) {
                         String dataForQr =
                             "Name: ${controller.searchedProduct[index].productName!}\nCategory: ${controller.searchedProduct[index].category!}\nDescription: ${controller.searchedProduct[index].description!}";
                         return ProductCard(
                           dataForQr: dataForQr,
-                          controller: controller,
                           index: index,
                         );
                       },
                       itemCount: controller.searchedProduct.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 6,
+                        crossAxisCount: size.width~/300,
                         crossAxisSpacing: 10,
-                        childAspectRatio: (size.width / size.height) * 0.4,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 285/342
                       ),
                     ),
                   ),

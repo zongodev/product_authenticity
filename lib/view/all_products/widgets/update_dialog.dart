@@ -12,16 +12,17 @@ class UpdateDialog extends StatelessWidget {
   const UpdateDialog({
     super.key,
     required this.size,
-    required this.controller,
+
     required this.index, required this.onPress,
   });
 
   final Size size;
-  final ProductController controller;
+
   final int index;
   final Function() onPress;
   @override
   Widget build(BuildContext context) {
+    final productController = Get.find<ProductController>();
     return AlertDialog(
       surfaceTintColor: Colors.white,
       title: Text(
@@ -40,7 +41,7 @@ class UpdateDialog extends StatelessWidget {
                 width: 15,
               ),
               controller:
-              controller.nameController.value,
+              productController.nameController.value,
             ),
             AddProductTextField(
               textFieldName: 'Category',
@@ -49,7 +50,7 @@ class UpdateDialog extends StatelessWidget {
                 width: 15,
               ),
               controller:
-              controller.catController.value,
+              productController.catController.value,
             ),
             AddProductTextField(
               textFieldName: 'Description',
@@ -58,7 +59,7 @@ class UpdateDialog extends StatelessWidget {
                 width: 15,
               ),
               controller:
-              controller.descController.value,
+              productController.descController.value,
             ),
           ],
         ),

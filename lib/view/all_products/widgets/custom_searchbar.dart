@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:product_authenticity_fss/controller/products/products_controller.dart';
 
 import '../../../constants/colors.dart';
+
 class CustomSearchBar extends StatelessWidget {
-  const   CustomSearchBar({
-    super.key, required this.controller,
+  const CustomSearchBar({
+    super.key,
+    required this.controller,
+    required this.width,
   });
-  final ProductController controller ;
+
+  final ProductController controller;
+
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
-      width: 320,
+      width: width,
       child: TextField(
-
-        onChanged:(search)=> controller.searchProduct(search),
+        onChanged: (search) => controller.searchProduct(search),
         style: const TextStyle(height: 1),
         decoration: InputDecoration(
             fillColor: Colors.white,
@@ -36,9 +41,10 @@ class CustomSearchBar extends StatelessWidget {
               Icons.search,
               color: Color(0xff9DA3B2),
             ),
-            label: const Text("Search product ..."),
-            labelStyle: const TextStyle(
-                color: Color(0xff727A90), fontFamily: "Kanit")),
+            label: const FittedBox(
+                fit: BoxFit.scaleDown, child: Text("Search product ...")),
+            labelStyle:
+                const TextStyle(color: Color(0xff727A90), fontFamily: "Kanit")),
       ),
     );
   }

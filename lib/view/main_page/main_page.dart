@@ -16,8 +16,8 @@ class MainPage extends StatelessWidget {
       body: Column(
         children: [
           const  NavBar(),
-          /*AllProducts(),*/
-          Obx(() => navigationController.buildCurrentPage()),
+          AllProducts(),
+          /*Obx(() => navigationController.buildCurrentPage()),*/
         ],
       ),
     );
