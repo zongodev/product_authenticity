@@ -40,30 +40,53 @@ class AllProducts extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(80.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomSearchBar(
-                        controller: controller, width: size.width*0.2,
-                      ),
-                      DeleteAllButton(
-                        onPress: () {
-                          Get.dialog(DeleteDialog(
-                            productName: "all products",
-                            onPressed: () async =>
-                                await controller.deleteAllProduct(),
-                          ));
-                        },
-                      ),
-                    ],
-                  ),
+                  !Responsive.isMobile(context)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomSearchBar(
+                              controller: controller,
+                              width: size.width * 0.2,
+                            ),
+                            DeleteAllButton(
+                              onPress: () {
+                                Get.dialog(DeleteDialog(
+                                  productName: "all products",
+                                  onPressed: () async =>
+                                      await controller.deleteAllProduct(),
+                                ));
+                              },
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomSearchBar(
+                              controller: controller,
+                              width: size.width * 0.2,
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            DeleteAllButton(
+                              onPress: () {
+                                Get.dialog(DeleteDialog(
+                                  productName: "all products",
+                                  onPressed: () async =>
+                                      await controller.deleteAllProduct(),
+                                ));
+                              },
+                            ),
+                          ],
+                        ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
                   Expanded(
                     child: GridView.builder(
-
                       itemBuilder: (context, index) {
                         String dataForQr =
                             "Name: ${controller.searchedProduct[index].productName!}\nCategory: ${controller.searchedProduct[index].category!}\nDescription: ${controller.searchedProduct[index].description!}";
@@ -74,11 +97,10 @@ class AllProducts extends StatelessWidget {
                       },
                       itemCount: controller.searchedProduct.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: size.width~/300,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 285/342
-                      ),
+                          crossAxisCount: size.width ~/ 300,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 285 / 342),
                     ),
                   ),
                 ],

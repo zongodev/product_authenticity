@@ -18,7 +18,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
-      width: width,
+      width: 320,
       child: TextField(
         onChanged: (search) => controller.searchProduct(search),
         style: const TextStyle(height: 1),

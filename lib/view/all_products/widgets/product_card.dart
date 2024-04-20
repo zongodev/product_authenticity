@@ -35,7 +35,7 @@ class ProductCard extends StatelessWidget {
     final productController = Get.find<ProductController>();
     Get.find<QrCodeController>();
 
-    GlobalKey qrCodeKey =GlobalKey();
+    GlobalKey qrCodeKey = GlobalKey();
 
     return Card(
       surfaceTintColor: Colors.white,
@@ -43,15 +43,15 @@ class ProductCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: LayoutBuilder(
-          builder: (context,constraints){
+          builder: (context, constraints) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Center(
                   child: SizedBox(
-                    width: constraints.maxWidth*0.9,
-                    height: constraints.maxWidth*0.7,
+                    width: constraints.maxWidth * 0.9,
+                    height: constraints.maxWidth * 0.7,
                     child: Card(
                       color: Colors.blueAccent,
                       child: Center(
@@ -68,7 +68,6 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -86,96 +85,122 @@ class ProductCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width:constraints.maxWidth*0.6,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Get.dialog(
-                              DetailsDialog(size: size, index: index, qrCodeKey: qrCodeKey));
-                        },
-                        label: const FittedBox(fit:BoxFit.scaleDown,child: Text("Details")),
-                        style: ElevatedButton.styleFrom(
-                            surfaceTintColor: Colors.white,
-                            backgroundColor: Colors.blueAccent,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            textStyle: dialogButtons),
-                        icon: const Icon(Icons.description_outlined),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: constraints.maxWidth * 0.6,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Get.dialog(DetailsDialog(
+                                size: size,
+                                index: index,
+                                qrCodeKey: qrCodeKey));
+                          },
+                          label: const FittedBox(
+                              fit: BoxFit.scaleDown, child: Text("Details")),
+                          style: ElevatedButton.styleFrom(
+                              surfaceTintColor: Colors.white,
+                              backgroundColor: Colors.blueAccent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              textStyle: dialogButtons),
+                          icon: const Icon(Icons.description_outlined),
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                            onPressed: () async {
-                              Get.dialog(
-                                DeleteDialog(
-                                  productName: productController
-                                      .searchedProduct[index].productName!,
+                      SizedBox(width: 20,),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: IconButton(
                                   onPressed: () async {
-                                    await productController.deleteProduct(
-                                        productController.searchedProduct[index].uid!,
-                                        productController
-                                            .searchedProduct[index].productName!);
-                                  },
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.delete,)),
-                        IconButton(
-                            onPressed: () {
-                              productController.nameController.value.text =
-                              productController.searchedProduct[index].productName!;
-                              productController.catController.value.text =
-                              productController.searchedProduct[index].category!;
-                              productController.descController.value.text =
-                              productController.searchedProduct[index].description!;
-                              Get.dialog(
-                                UpdateDialog(
-                                  size: size,
-                                  index: index,
-                                  onPress: () async {
-                                    print("$index");
-                                    EasyLoading.show(status: "loading ...");
-                                    ProductModel editedProduct = ProductModel(
-                                        productName:
-                                        productController.nameController.value.text,
-                                        category:
-                                        productController.catController.value.text,
-                                        description:
-                                        productController.descController.value.text,
-                                        uid: productController.searchedProduct[index].uid!
+                                    Get.dialog(
+                                      DeleteDialog(
+                                        productName: productController
+                                            .searchedProduct[index]
+                                            .productName!,
+                                        onPressed: () async {
+                                          await productController.deleteProduct(
+                                              productController
+                                                  .searchedProduct[index].uid!,
+                                              productController
+                                                  .searchedProduct[index]
+                                                  .productName!);
+                                        },
+                                      ),
                                     );
-                                    print("test the log $index");
-                                    print("test the log new ${productController.searchedProduct[index].uid}");
-                                    await productController.updateProduct(
-                                        productController.searchedProduct[index].uid!,
-                                        editedProduct);
                                   },
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.edit)),
-                      ],
-                    ),
-                  ],
+                                  icon: const Icon(
+                                    Icons.delete,
+                                  )),
+                            ),
+
+                            Expanded(
+                              child: IconButton(
+                                  onPressed: () {
+                                    productController.nameController.value.text =
+                                        productController
+                                            .searchedProduct[index].productName!;
+                                    productController.catController.value.text =
+                                        productController
+                                            .searchedProduct[index].category!;
+                                    productController.descController.value.text =
+                                        productController
+                                            .searchedProduct[index].description!;
+                                    Get.dialog(
+                                      UpdateDialog(
+                                        size: size,
+                                        index: index,
+                                        onPress: () async {
+                                          print("$index");
+                                          EasyLoading.show(status: "loading ...");
+                                          ProductModel editedProduct =
+                                              ProductModel(
+                                                  productName:
+                                                      productController
+                                                          .nameController
+                                                          .value
+                                                          .text,
+                                                  category:
+                                                      productController
+                                                          .catController
+                                                          .value
+                                                          .text,
+                                                  description: productController
+                                                      .descController.value.text,
+                                                  uid: productController
+                                                      .searchedProduct[index]
+                                                      .uid!);
+                                          print("test the log $index");
+                                          print(
+                                              "test the log new ${productController.searchedProduct[index].uid}");
+                                          await productController.updateProduct(
+                                              productController
+                                                  .searchedProduct[index].uid!,
+                                              editedProduct);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             );
           },
-
         ),
       ),
     );
   }
 }
-
-
 
 /*
 * ListTile(
