@@ -18,6 +18,7 @@ import 'package:product_authenticity_fss/view/all_products/widgets/product_card.
 
 import '../../constants/app_styles.dart';
 import '../../controller/products/products_controller.dart';
+import '../../utils/helpercrypt.dart';
 
 class AllProducts extends StatelessWidget {
   const AllProducts({super.key});
@@ -25,6 +26,7 @@ class AllProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final encryptionHelper = EncryptionHelper('ug7hItnmetC4atRLpDYxqan1199p9hPr');
 
     return GetBuilder<ProductController>(
       init: ProductController(),
@@ -52,7 +54,8 @@ class AllProducts extends StatelessWidget {
                             ),
                             DeleteAllButton(
                               onPress: () {
-                                Get.dialog(DeleteDialog(
+                                Get.dialog(
+                                    DeleteDialog(
                                   productName: "all products",
                                   onPressed: () async =>
                                       await controller.deleteAllProduct(),
@@ -73,7 +76,8 @@ class AllProducts extends StatelessWidget {
                             ),
                             DeleteAllButton(
                               onPress: () {
-                                Get.dialog(DeleteDialog(
+                                Get.dialog(
+                                    DeleteDialog(
                                   productName: "all products",
                                   onPressed: () async =>
                                       await controller.deleteAllProduct(),
@@ -89,9 +93,10 @@ class AllProducts extends StatelessWidget {
                     child: GridView.builder(
                       itemBuilder: (context, index) {
                         String dataForQr =
-                            "Name: ${controller.searchedProduct[index].productName!}\nCategory: ${controller.searchedProduct[index].category!}\nDescription: ${controller.searchedProduct[index].description!}";
+                            "Name: ${controller.searchedProduct[index].productName!}\nCategory: ${controller.searchedProduct[index].category!}\nDescription: ${controller.searchedProduct[index].description!}\nid: ${controller.searchedProduct[index].productId!}";
+                        String codeQRCode = encryptionHelper.encrypt(dataForQr);
                         return ProductCard(
-                          dataForQr: dataForQr,
+                          dataForQr: codeQRCode,
                           index: index,
                         );
                       },

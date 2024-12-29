@@ -18,6 +18,7 @@ class ProductPopUpMenu extends StatelessWidget {
     return Padding(
       padding: defaultNavBarItemsPadding(context),
       child: PopupMenuButton(
+        tooltip: "Show products menu",
         surfaceTintColor: Colors.white,
         child: Text(
           "Products",

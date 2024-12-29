@@ -7,6 +7,7 @@ import '../../../constants/app_styles.dart';
 import '../../../controller/products/products_controller.dart';
 import '../../../models/product_model.dart';
 import '../../../shared/back_dialog_button.dart';
+import '../../../shared/custom_image_picker.dart';
 import '../../add_product/widgets/add_product_text_field.dart';
 class UpdateDialog extends StatelessWidget {
   const UpdateDialog({
@@ -32,6 +33,7 @@ class UpdateDialog extends StatelessWidget {
       content: SizedBox(
         width: size.width * 0.2,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             AddProductTextField(
@@ -42,6 +44,12 @@ class UpdateDialog extends StatelessWidget {
               ),
               controller:
               productController.nameController.value,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a product name';
+                }
+                return null; // Return null if validation succeeds
+              },
             ),
             AddProductTextField(
               textFieldName: 'Category',
@@ -51,6 +59,12 @@ class UpdateDialog extends StatelessWidget {
               ),
               controller:
               productController.catController.value,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a product category';
+                }
+                return null; // Return null if validation succeeds
+              },
             ),
             AddProductTextField(
               textFieldName: 'Description',
@@ -59,8 +73,14 @@ class UpdateDialog extends StatelessWidget {
                 width: 15,
               ),
               controller:
-              productController.descController.value,
+              productController.descController.value, validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a product Description';
+              }
+              return null; // Return null if validation succeeds
+            },
             ),
+            CustomImagePicker(addProductController: productController,),
           ],
         ),
       ),

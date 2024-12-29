@@ -6,6 +6,7 @@ final CollectionReference _productCollectionReference = FirebaseFirestore.instan
 
 Future<void> addProduct(ProductModel product) async{
   await _productCollectionReference.add(product.toMap());
+
 }
 
 Future<List<QueryDocumentSnapshot>>  fetchProduct() async {

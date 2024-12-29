@@ -29,6 +29,13 @@ dependencies:
   google_sign_in: ^6.2.1
   cloud_firestore: ^4.16.0
   sprung: ^3.0.1
+  image_picker: ^1.1.0
+  dotted_border: ^2.1.0
+  firebase_storage: ^11.7.4
+  uuid: ^4.4.0
+  smooth_page_indicator: ^1.1.0
+  encrypt: ^5.0.3
+
 
 dev_dependencies:
   flutter_test:

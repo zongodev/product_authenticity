@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -26,10 +26,12 @@ class Login extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final AuthController authController = Get.find();
     return Padding(
-      padding: !Responsive.isMobile(context)?EdgeInsets.only(
-        left: size.width * 0.2,
-        right: size.width * 0.1,
-      ):defaultMobilePadding(context),
+      padding: !Responsive.isMobile(context)
+          ? EdgeInsets.only(
+              left: size.width * 0.2,
+              right: size.width * 0.1,
+            )
+          : defaultMobilePadding(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +59,10 @@ class Login extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text("Email", style: loginLabelStyle),
                   ),
-                   LoginTextField(controller: emailController, isPassword: false,),
+                  LoginTextField(
+                    controller: emailController,
+                    isPassword: false,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
@@ -65,11 +70,62 @@ class Login extends StatelessWidget {
                       style: loginLabelStyle,
                     ),
                   ),
-                   LoginTextField(controller: passwordController, isPassword: true,),
+                  LoginTextField(
+                    controller: passwordController,
+                    isPassword: true,
+                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.dialog(
+                         Dialog(
+
+                            surfaceTintColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                     Text(
+                                        "Enter your email and we will send you a password reset link",style: navBarItemStyle,),
+                                    SizedBox(height: 20,),
+                                    TextFormField(
+                                      controller: authController.resetController,
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xffD0D5DD), width: 2),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xffD0D5DD), width: 2),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        hintText: "user@example.com",
+                                      ),
+                                    ),
+                                    SizedBox(height: 20,),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: ElevatedButton(
+                                          onPressed: () async {
+                                            await authController
+                                                .resetPass(authController.resetController.text);
+                                          },
+                                          child: const Text("Reset password")),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       style: TextButton.styleFrom(
                           foregroundColor: Colors.black,
                           textStyle: const TextStyle(fontFamily: "Oganesson")),
@@ -80,33 +136,24 @@ class Login extends StatelessWidget {
                     btnText: 'Sign in',
                     onTap: () async {
                       EasyLoading.show(status: "loading ...");
-                      await authController.login(emailController.text, passwordController.text);
+                      await authController.login(
+                          emailController.text, passwordController.text);
                     },
                     wSize: size.width,
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  SignInBtn(
-                    wSize: size.width,
-                    btnText: 'Sign in with Google',
-                    onTap: () async {
-
-                    },
-                    icon: Image.asset(
-                      "assets/icons/gl.png",
-                      width: 16,
-                    ), clr: headerColor,
-                  ),
                 ],
               ),
             ),
           ),
-          !Responsive.isMobile(context)?
-          Image.asset(
-            "assets/images/loginimg.png",
-            width: size.width * 0.4,
-          ):const SizedBox(),
+          !Responsive.isMobile(context)
+              ? Image.asset(
+                  "assets/images/loginimg.png",
+                  width: size.width * 0.4,
+                )
+              : const SizedBox(),
         ],
       ),
     );

@@ -14,7 +14,7 @@ class NoProduct extends StatelessWidget {
         children: [
           Image.asset("assets/images/empty.png"),
           Text(
-            "Oops! It seems there are no products available.",
+            "Oops! It seems there are no product available.",
             style: navBarItemStyle.copyWith(fontSize: 25),
           ),
         ],

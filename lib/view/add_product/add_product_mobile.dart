@@ -51,9 +51,9 @@ class AddProductMobile extends StatelessWidget {
                       width: size.width * 0.38,
                       height: size.height * 0.26,
                       child: Center(
-                        child: PrettyQrView.data(
-                          data: qrCodeController.qrData.value,
-                        ),
+                          child: PrettyQrView.data(
+                            data: qrCodeController.qrData.value,
+                          ),
                       ),
                     ),
                   ),
@@ -95,6 +95,12 @@ class AddProductMobile extends StatelessWidget {
                       width: 15,
                     ),
                     controller: addProductController.nameController.value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a product name';
+                      }
+                      return null; // Return null if validation succeeds
+                    },
                   ),
                   AddProductTextField(
                     textFieldName: 'Category',
@@ -103,6 +109,12 @@ class AddProductMobile extends StatelessWidget {
                       width: 15,
                     ),
                     controller: addProductController.catController.value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a product category';
+                      }
+                      return null; // Return null if validation succeeds
+                    },
                   ),
                   AddProductTextField(
                     textFieldName: 'Description',
@@ -111,6 +123,12 @@ class AddProductMobile extends StatelessWidget {
                       width: 15,
                     ),
                     controller: addProductController.descController.value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a product Description';
+                      }
+                      return null; // Return null if validation succeeds
+                    },
                   ),
                   Row(
                     children: [
@@ -121,15 +139,10 @@ class AddProductMobile extends StatelessWidget {
                           qrCodeController.generateQr(
                               addProductController.nameController.value.text,
                               addProductController.catController.value.text,
-                              addProductController.descController.value.text);
-                          ProductModel product = ProductModel(
-                              productName: addProductController
-                                  .nameController.value.text,
-                              category: addProductController
-                                  .catController.value.text,
-                              description: addProductController
-                                  .descController.value.text);
-                          addProductController.addProduct(product);
+                              addProductController.descController.value.text,
+                            addProductController.productId.value
+                          );
+                          addProductController.addProduct();
                           print(qrCodeController.qrData.value);
                         },
                         wSize: size.width*0.46,

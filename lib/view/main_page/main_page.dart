@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:product_authenticity_fss/view/add_product/add_product.dart';
 import 'package:product_authenticity_fss/view/add_product/add_product_mobile.dart';
 import 'package:product_authenticity_fss/view/all_products/all_products.dart';
 import '../../controller/navigation_controller.dart';
@@ -16,8 +17,11 @@ class MainPage extends StatelessWidget {
       body: Column(
         children: [
           const  NavBar(),
-          AllProducts(),
-          /*Obx(() => navigationController.buildCurrentPage()),*/
+         /* AllProducts(),*/
+/*
+          AddProduct(),
+*/
+          Obx(() => navigationController.buildCurrentPage()),
         ],
       ),
     );

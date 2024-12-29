@@ -5,8 +5,9 @@ class AddProductTextField extends StatelessWidget {
   final String textFieldName;
   final Widget iconPath;
   final TextEditingController controller ;
+  final String? Function(String?)? validator;
   const AddProductTextField({
-    super.key, required this.textFieldName, required this.iconPath, required this.controller,
+    super.key, required this.textFieldName, required this.iconPath, required this.controller,required this.validator
   });
 
   @override
@@ -14,6 +15,7 @@ class AddProductTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        validator: validator,
         maxLines: null,
         keyboardType: TextInputType.multiline,
         controller: controller,

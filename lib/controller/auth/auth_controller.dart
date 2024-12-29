@@ -15,6 +15,8 @@ class AuthController extends GetxController {
   final Stream<User?> userStream = FirebaseAuth.instance.authStateChanges();
   late String errorMessage;
   Rx<User?> user = Rx<User?>(null);
+  final TextEditingController resetController = TextEditingController();
+
 
   @override
   void onInit() {
@@ -22,7 +24,7 @@ class AuthController extends GetxController {
     userStream.listen((user) {
       this.user.value = user;
       if(user != null){
-        navigationController.changeCurrentRoute(Routes.TEST);
+        navigationController.changeCurrentRoute(Routes.onBoarding);
         update();
       }else {
         navigationController.changeCurrentRoute(Routes.initial);
@@ -34,16 +36,33 @@ class AuthController extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
-      UserCredential authResult =
-          await _authService.loginAdmin(email, password);
-      if (authResult.user != null) {
-        print(authResult);
-        EasyLoading.dismiss();
-        EasyLoading.showSuccess("Login Successful!");
-        navigationController.currentRoute(Routes.TEST);
-        print("login correct");
+      EasyLoading.show(status: "Checking credentials...");
+      bool isAdmin = await _authService.isAdminEmail(email);
+      EasyLoading.dismiss();
 
-        update();
+      if (isAdmin) {
+        EasyLoading.show(status: "Logging in...");
+        UserCredential authResult = await _authService.loginAdmin(email, password);
+        if (authResult.user != null) {
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess("Login Successful!");
+          navigationController.currentRoute(Routes.onBoarding);
+          update();
+        }
+      } else {
+        EasyLoading.dismiss();
+        Get.snackbar("Permission Denied", "You do not have permission to access this account.",
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 7),
+            icon: const Icon(
+              Icons.error_outline,
+              color: Colors.white,
+              size: 40,
+            ),
+            maxWidth: 500,
+            margin: const EdgeInsets.only(bottom: 10),
+            backgroundColor: const Color(0xffE6284A),
+            colorText: Colors.white);
       }
     } on FirebaseAuthException catch (e) {
       print(e.code.toString());
@@ -61,7 +80,8 @@ class AuthController extends GetxController {
           errorMessage = 'Please enter your password.';
           break;
         case 'network-request-failed':
-          errorMessage='A network error occurred. Please check your connection and try again.';
+          errorMessage = 'A network error occurred. Please check your connection and try again.';
+          break;
         default:
           errorMessage = 'An unknown error occurred.';
       }
@@ -79,7 +99,6 @@ class AuthController extends GetxController {
           backgroundColor: const Color(0xffE6284A),
           colorText: Colors.white);
     } catch (e) {
-      print("object");
       EasyLoading.dismiss();
       Get.snackbar("Could not sign in", e.toString(),
           snackPosition: SnackPosition.BOTTOM,
@@ -94,9 +113,44 @@ class AuthController extends GetxController {
           backgroundColor: const Color(0xffE6284A),
           colorText: Colors.white);
     }
-  }
-  Future<void> signOut() async {
+  }  Future<void> signOut() async {
     await _authService.signOut();
+  }
+
+  Future<void> resetPass(String email) async {
+    try {
+     
+      await _authService.resetPass(email).then((value) {
+        resetController.clear();
+        Get.back();
+        return Get.snackbar("Success", "A password reset link has been sent to your email. Please check your inbox.",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 7),
+          icon: const Icon(
+            Icons.check,
+            color: Colors.white,
+            size: 40,
+          ),
+          maxWidth: 500,
+          margin: const EdgeInsets.only(bottom: 10),
+          backgroundColor: Colors.green,
+          colorText: Colors.white);
+      },);
+    
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 7),
+          icon: const Icon(
+            Icons.error_outline,
+            color: Colors.white,
+            size: 40,
+          ),
+          maxWidth: 500,
+          margin: const EdgeInsets.only(bottom: 10),
+          backgroundColor: const Color(0xffE6284A),
+          colorText: Colors.white);
+    }
   }
 
 }
